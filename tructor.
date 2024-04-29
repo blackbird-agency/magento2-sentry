@@ -1,0 +1,13 @@
+[1mdiff --git a/Helper/Data.php b/Helper/Data.php[m
+[1mindex c5c1388..50fa28f 100644[m
+[1m--- a/Helper/Data.php[m
+[1m+++ b/Helper/Data.php[m
+[36m@@ -102,7 +102,7 @@[m [mclass Data extends AbstractHelper[m
+         $list = $this->collectModuleConfig()['ignore_js_errors'];[m
+ [m
+         if ($list === null) {[m
+[31m-            return [];[m
+[32m+[m[32m            return null;[m
+         }[m
+ [m
+         try {[m
