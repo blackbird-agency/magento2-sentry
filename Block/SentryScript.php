@@ -41,11 +41,11 @@ class SentryScript extends Template
             return false;
         }
 
-        if ($this->dataHelper->useScriptTag() && $this->dataHelper->showScriptTagInThisBlock($blockName)) {
-            return true;
+        if(!($this->dataHelper->useScriptTag() || $this->dataHelper->useSessionReplay())){
+            return false;
         }
 
-        if ($this->dataHelper->useSessionReplay()) {
+        if ($this->dataHelper->showScriptTagInThisBlock($blockName)) {
             return true;
         }
 
