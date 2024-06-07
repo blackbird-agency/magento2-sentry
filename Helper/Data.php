@@ -73,7 +73,7 @@ class Data extends AbstractHelper
      */
     public function getDSN()
     {
-        return $this->config['dsn'];
+        return $this->config[$this->getStoreId()]['dsn'];
     }
 
     /**
@@ -81,7 +81,7 @@ class Data extends AbstractHelper
      */
     public function getEnvironment()
     {
-        return $this->config['environment'];
+        return $this->config[$this->getStoreId()]['environment'];
     }
 
     /**
@@ -115,10 +115,10 @@ class Data extends AbstractHelper
      */
     public function collectModuleConfig()
     {
-        $this->config['enabled'] = $this->deploymentConfig->get('sentry') !== null;
+        $this->config[$this->getStoreId()]['enabled'] = $this->deploymentConfig->get('sentry') !== null;
 
         foreach ($this->configKeys as $value) {
-            $this->config[$value] = $this->deploymentConfig->get('sentry/'.$value);
+            $this->config[$this->getStoreId()][$value] = $this->deploymentConfig->get('sentry/'.$value);
         }
 
         return $this->config;
@@ -141,7 +141,7 @@ class Data extends AbstractHelper
     {
         $reasons = [];
         $emptyConfig = empty($this->config);
-        $configEnabled = array_key_exists('enabled', $this->config) && $this->config['enabled'];
+        $configEnabled = array_key_exists('enabled', $this->config) && $this->config[$this->getStoreId()]['enabled'];
         $dsnNotEmpty = $this->getDSN();
         $productionMode = ($this->isProductionMode() || $this->isOverwriteProductionMode());
 
@@ -182,7 +182,7 @@ class Data extends AbstractHelper
      */
     public function isOverwriteProductionMode()
     {
-        return array_key_exists('mage_mode_development', $this->config) && $this->config['mage_mode_development'];
+        return array_key_exists('mage_mode_development', $this->config) && $this->config[$this->getStoreId()]['mage_mode_development'];
     }
 
     /**
@@ -208,7 +208,10 @@ class Data extends AbstractHelper
      */
     public function isPhpTrackingEnabled()
     {
-        return $this->scopeConfig->isSetFlag(static::XML_PATH_SRS.'enable_php_tracking');
+        return $this->scopeConfig->isSetFlag(
+            static::XML_PATH_SRS.'enable_php_tracking',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
@@ -216,7 +219,10 @@ class Data extends AbstractHelper
      */
     public function useScriptTag()
     {
-        return $this->scopeConfig->isSetFlag(static::XML_PATH_SRS.'enable_script_tag');
+        return $this->scopeConfig->isSetFlag(
+            static::XML_PATH_SRS.'enable_script_tag',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
@@ -241,7 +247,7 @@ class Data extends AbstractHelper
      */
     public function getLogrocketKey()
     {
-        return $this->config['logrocket_key'];
+        return $this->config[$this->getStoreId()]['logrocket_key'];
     }
 
     /**
@@ -251,7 +257,7 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->isSetFlag(static::XML_PATH_SRS.'use_logrocket') &&
             array_key_exists('logrocket_key', $this->config) &&
-            $this->config['logrocket_key'] != null;
+            $this->config[$this->getStoreId()]['logrocket_key'] != null;
     }
 
     /**
@@ -259,7 +265,10 @@ class Data extends AbstractHelper
      */
     public function useLogrocketIdentify()
     {
-        return $this->scopeConfig->isSetFlag(static::XML_PATH_SRS.'logrocket_identify');
+        return $this->scopeConfig->isSetFlag(
+            static::XML_PATH_SRS.'logrocket_identify',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
@@ -267,7 +276,10 @@ class Data extends AbstractHelper
      */
     public function stripStaticContentVersion()
     {
-        return $this->scopeConfig->isSetFlag(static::XML_PATH_SRS_ISSUE_GROUPING.'strip_static_content_version');
+        return $this->scopeConfig->isSetFlag(
+            static::XML_PATH_SRS_ISSUE_GROUPING.'strip_static_content_version',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
@@ -275,7 +287,10 @@ class Data extends AbstractHelper
      */
     public function stripStoreCode()
     {
-        return $this->scopeConfig->isSetFlag(static::XML_PATH_SRS_ISSUE_GROUPING.'strip_store_code');
+        return $this->scopeConfig->isSetFlag(
+            static::XML_PATH_SRS_ISSUE_GROUPING.'strip_store_code',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
@@ -283,7 +298,7 @@ class Data extends AbstractHelper
      */
     public function getErrorExceptionReporting()
     {
-        return $this->config['errorexception_reporting'] ?? E_ALL;
+        return $this->config[$this->getStoreId()]['errorexception_reporting'] ?? E_ALL;
     }
 
     /**
@@ -291,7 +306,7 @@ class Data extends AbstractHelper
      */
     public function getIgnoreExceptions()
     {
-        return (array) ($this->config['ignore_exceptions'] ?? []);
+        return (array) ($this->config[$this->getStoreId()]['ignore_exceptions'] ?? []);
     }
 
     /**
@@ -310,5 +325,13 @@ class Data extends AbstractHelper
         }
 
         return true;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStoreId():int
+    {
+        return $this->getStore()->getId() ?? 0;
     }
 }
