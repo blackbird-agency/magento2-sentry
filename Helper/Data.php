@@ -324,17 +324,7 @@ class Data extends AbstractHelper
      */
     public function getIgnoreExceptions()
     {
-        $config = $this->collectModuleConfig();
-
-        if (is_array($config['ignore_exceptions'])) {
-            return $config['ignore_exceptions'];
-        }
-
-        try {
-            return $this->serializer->unserialize($config['ignore_exceptions']);
-        } catch (InvalidArgumentException $e) {
-            return [];
-        }
+        return (array) ($this->config[$this->getStoreId()]['ignore_exceptions'] ?? []);
     }
 
     /**
