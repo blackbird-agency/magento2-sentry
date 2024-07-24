@@ -23,6 +23,7 @@ use Throwable;
 class Data extends AbstractHelper
 {
     const XML_PATH_SRS = 'sentry/general/';
+    const XML_PATH_PAGE_TYPE = 'sentry/pagetype/';
     const XML_PATH_SRS_ISSUE_GROUPING = 'sentry/issue_grouping/';
 
     /**
@@ -428,5 +429,21 @@ class Data extends AbstractHelper
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPageTypeTagEnabled():bool
+    {
+        return $this->scopeConfig->isSetFlag(static::XML_PATH_PAGE_TYPE.'enabled', ScopeInterface::SCOPE_STORE);
+    }
+
+    /**
+     * @return array{name:string, controller_full_names:string, urls:string}
+     */
+    public function getPageTypeMapping():array
+    {
+        return $this->scopeConfig->getValue(static::XML_PATH_PAGE_TYPE.'types', ScopeInterface::SCOPE_STORE);
     }
 }

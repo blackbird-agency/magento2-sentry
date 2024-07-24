@@ -4,7 +4,7 @@
         <sentry>
             <general>
                 <enable_php_tracking>1</enable_php_tracking>
-                <enable_script_tag>0</enable_script_tag>
+                <enable_script_tag>1</enable_script_tag>
                 <script_tag_placement>before.body.end</script_tag_placement>
                 <use_logrocket>0</use_logrocket>
                 <logrocket_identify>0</logrocket_identify>
@@ -13,6 +13,41 @@
                 <strip_static_content_version/>
                 <strip_store_code/>
             </issue_grouping>
+            <pagetype>
+                <enabled>1</enabled>
+                <types>
+                    <homepage>
+                        <name>homepage</name>
+                        <urls>/\?.*</urls>
+                        <controller_full_names></controller_full_names>
+                    </homepage>
+                    <product>
+                        <name>product</name>
+                        <urls></urls>
+                        <controller_full_names>catalog_product_view</controller_full_names>
+                    </product>
+                    <listing>
+                        <name>category</name>
+                        <urls></urls>
+                        <controller_full_names>catalog_category_view</controller_full_names>
+                    </listing>
+                    <customer>
+                        <name>customer</name>
+                        <urls></urls>
+                        <controller_full_names>customer_.*</controller_full_names>
+                    </customer>
+                    <checkout>
+                        <name>checkout</name>
+                        <urls></urls>
+                        <controller_full_names>checkout_.*</controller_full_names>
+                    </checkout>
+                    <cmspage>
+                        <name>cms_page</name>
+                        <urls></urls>
+                        <controller_full_names>cms_page_view</controller_full_names>
+                    </cmspage>
+                </types>
+            </pagetype>
             <environment>
                 <dsn/>
                 <logrocket_key/>

@@ -1,6 +1,9 @@
 <?php
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 
+/**
+ * @var \Magento\Framework\Escaper $escaper
+ */
 /** @var \JustBetter\Sentry\Block\SentryScript $block */
 if (!$block->canUseScriptTag($block->getNameInLayout())) {
     return;
@@ -40,7 +43,7 @@ if (typeof Sentry !== 'undefined') {
             }),
             <?php endif ?>
             <?php if ($block->useSessionReplay()): ?>
-            new Sentry.Replay({
+            new Sentry.replayIntegration({
                 blockAllMedia: <?= $block->escapeHtml($block->getReplayBlockMedia() ? 'true' : 'false') ?>,
                 maskAllText: <?= $block->escapeHtml($block->getReplayMaskText() ? 'true' : 'false') ?>,
             })
@@ -83,6 +86,9 @@ if (typeof Sentry !== 'undefined') {
         }
     <?php endif; ?>
     });
+    <?php if($block->isPageTypeTagEnabled()): ?>
+        Sentry.setTag("page_type", '<?= $escaper->escapeJs($block->getPageType()) ?>');
+    <?php endif?>
 }
 </script>
 

@@ -11,9 +11,21 @@ use function Sentry\init;
 
 class SentryInteraction
 {
+
+    public function __construct(
+        protected PageType $pageType
+    )
+    {
+    }
+
     public function initialize($config)
     {
         init($config);
+        if($this->pageType->isEnabled()) {
+            \Sentry\configureScope(function (\Sentry\State\Scope $scope): void {
+                $scope->setTag('page_type', $this->pageType->getPageType());
+            });
+        }
     }
 
     public function captureException(\Throwable $ex)

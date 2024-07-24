@@ -4,6 +4,7 @@ namespace JustBetter\Sentry\Block;
 
 use JustBetter\Sentry\Helper\Data as DataHelper;
 use JustBetter\Sentry\Helper\Version;
+use JustBetter\Sentry\Model\PageType;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 
@@ -23,6 +24,7 @@ class SentryScript extends Template
         private Version $version,
         Template\Context $context,
         private Json $json,
+        private PageType $pageType,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -185,5 +187,13 @@ class SentryScript extends Template
     public function getIgnoreJsErrors(): string
     {
         return $this->json->serialize($this->dataHelper->getIgnoreJsErrors());
+    }
+
+    public function isPageTypeTagEnabled():bool{
+        return $this->pageType->isEnabled();
+    }
+
+    public function getPageType():string{
+        return $this->pageType->getPageType();
     }
 }

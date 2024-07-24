@@ -1,4 +1,13 @@
 # Changelog
+## [3.7.2-p1] - 2024-07-24
+### Added
+    * Add ability to send a "page_type" tag on event in order to group transactions depending on page types for alerting purpose.
+### Changed
+    * Remove the "justbetter" tab in config, and add Sentry configuration to "service" tab.
+## [3.7.2] - 2024-07-04
+### Fixed
+    * fix initialisation of replay integration (https://github.com/justbetter/magento2-sentry/pull/143) thanks to https://github.com/rommelfreddy
+# Changelog
 ## [3.7.1] - 2024-06-25
 ### Fixed
     * Fix CSP after Polyfill changes (https://github.com/justbetter/magento2-sentry/pull/141) thanks to https://github.com/sprankhub

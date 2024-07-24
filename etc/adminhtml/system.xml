@@ -1,13 +1,10 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="justbetter" translate="label" sortOrder="2000">
-            <label>JustBetter</label>
-        </tab>
         <section id="sentry" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Sentry configuration</label>
-            <tab>justbetter</tab>
+            <tab>service</tab>
             <resource>JustBetter_Sentry::configuration</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1" canRestore="1">
                 <label>Sentry general config</label>
@@ -82,7 +79,21 @@
                     <frontend_model>JustBetter\Sentry\Block\Adminhtml\System\Config\Button</frontend_model>
                 </field>
             </group>
-            <group id="environment" translate="label comment" sortOrder="20" showInDefault="1" showInStore="1" showInWebsite="1" canRestore="1">
+            <group id="pagetype" translate="label comment" sortOrder="20" showInDefault="1" showInStore="1" showInWebsite="1" canRestore="1">
+                <label>Page Type Tag</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1" canRestore="1">
+                    <label>Enabled</label>
+                    <comment>Enable page type tag on Sentry sent events.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="types" translate="label" type="select" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1" canRestore="1">
+                    <label>Page Types</label>
+                    <comment>The list of page types, you can ue regex patterns in URLs and Controller Names</comment>
+                    <frontend_model>JustBetter\Sentry\Block\Adminhtml\System\Config\Field\PageTypes</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+            <group id="environment" translate="label comment" sortOrder="30" showInDefault="1" showInStore="1" showInWebsite="1" canRestore="1">
                 <label>Environment Configuration</label>
                 <comment><![CDATA[Setting the configuration here will override the Magento Deployment Configuration.]]></comment>
                 <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1" canRestore="1">
