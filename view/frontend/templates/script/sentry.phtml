@@ -5,6 +5,9 @@
  * @var \Magento\Framework\Escaper $escaper
  */
 /** @var \JustBetter\Sentry\Block\SentryScript $block */
+/**
+ * @var \Blackbird\NonceProvider\ViewModel\NonceProvider $nonceProvider
+ */
 if (!$block->canUseScriptTag($block->getNameInLayout())) {
     return;
 }
@@ -28,9 +31,9 @@ $remoteFile = sprintf(
 );
 ?>
 
-<script src="https://polyfill-fastly.io/v2/polyfill.min.js?features=Promise" crossorigin></script>
-<script src="<?= /** @noEscape */$remoteFile ?>" crossorigin="anonymous"></script>
-<script>
+<script src="https://polyfill-fastly.io/v2/polyfill.min.js?features=Promise" crossorigin <?= $nonceProvider->renderNonceAttribute() ?>></script>
+<script src="<?= /** @noEscape */$remoteFile ?>" crossorigin="anonymous" <?= $nonceProvider->renderNonceAttribute() ?>></script>
+<script type="text/javascript" <?= $nonceProvider->renderNonceAttribute() ?>>
 if (typeof Sentry !== 'undefined') {
     Sentry.init({
         dsn: '<?= $block->escapeUrl(trim($block->getDSN())) ?>',
@@ -43,7 +46,7 @@ if (typeof Sentry !== 'undefined') {
             }),
             <?php endif ?>
             <?php if ($block->useSessionReplay()): ?>
-            new Sentry.replayIntegration({
+            Sentry.replayIntegration({
                 blockAllMedia: <?= $block->escapeHtml($block->getReplayBlockMedia() ? 'true' : 'false') ?>,
                 maskAllText: <?= $block->escapeHtml($block->getReplayMaskText() ? 'true' : 'false') ?>,
             })
@@ -93,11 +96,11 @@ if (typeof Sentry !== 'undefined') {
 </script>
 
 <?php if ($block->useLogRocket()): ?>
-    <script src="https://cdn.lr-ingest.io/LogRocket.min.js" crossorigin="anonymous"></script>
-    <script>
+    <script src="https://cdn.lr-ingest.io/LogRocket.min.js" crossorigin="anonymous" <?= $nonceProvider->renderNonceAttribute() ?>></script>
+    <script type="text/javascript" <?= $nonceProvider->renderNonceAttribute() ?> <?= $nonceProvider->renderNonceAttribute() ?>>
         window.LogRocket && window.LogRocket.init('<?= /* @noEscape */ trim($block->getLogrocketKey()) ?>');
     </script>
-    <script>
+    <script type="text/javascript" <?= $nonceProvider->renderNonceAttribute() ?>>
         LogRocket.getSessionURL(sessionURL => {
             Sentry.configureScope(scope => {
                 scope.setExtra("sessionURL", sessionURL);

@@ -1,4 +1,8 @@
 # Changelog
+## [3.7.2-p2] - 2024-07-25
+### Fixed
+    * Fix replay initialization issue
+    * Fix issue with CSP by adding nonce to script tag
 ## [3.7.2-p1] - 2024-07-24
 ### Added
     * Add ability to send a "page_type" tag on event in order to group transactions depending on page types for alerting purpose.
