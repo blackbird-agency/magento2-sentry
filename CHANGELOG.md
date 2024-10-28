@@ -1,4 +1,7 @@
 # Changelog
+## [3.7.2-p3] - 2024-10-28
+### Fixed
+    * Update SDK version to 8.35.0
 ## [3.7.2-p2] - 2024-07-25
 ### Fixed
     * Fix replay initialization issue
